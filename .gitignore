@@ -1,14 +1,8 @@
 # dataset
 data/
-*.zip
-*.csv
 
 # model weights
 models/
-*.pth
-*.pt
-*.h5
-*.ckpt
 
 # python
 __pycache__/
