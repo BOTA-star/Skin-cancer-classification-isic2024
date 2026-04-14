@@ -3,7 +3,6 @@ import pandas as pd
 from torch.utils.data import Dataset
 from PIL import Image
 
-
 class ISICDataset(Dataset):
     def __init__(self, csv_file, image_dir, transform = None):
         self.df = pd.read_csv(csv_file)
