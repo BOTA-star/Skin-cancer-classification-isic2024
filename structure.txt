@@ -1,0 +1,31 @@
+DATN/
+|-- config/
+|   |-- class_weight.json
+|-- data/
+|-- models/
+|   |-- DEP.ipynb
+|-- notebooks/
+|   |-- 00_extract_data.ipynb
+|   |-- 01_data_integrity.ipynb
+|   |-- 02_train_val_split.ipynb
+|   |-- 03_compute_class_weight.ipynb
+|   |-- 04_test_dataset.ipynb
+|   |-- 05_test_transforms.ipynb
+|   |-- 06_test_dataloader.ipynb
+|   |-- 07_test_model.ipynb
+|   |-- 08_test_training.ipynb
+|   |-- DEP.ipynb
+|-- src/
+|   |-- __pycache__/
+|   |-- dataloader.py
+|   |-- dataset.py
+|   |-- DEP.ipynb
+|   |-- model.py
+|   |-- train.py
+|   |-- transforms.py
+|-- venv/
+|-- .gitignore
+|-- main.ipynb
+|-- README.md
+|-- requirements.txt
+|-- structure.txt
