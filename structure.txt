@@ -2,6 +2,10 @@ DATN/
 |-- config/
 |   |-- class_weight.json
 |-- data/
+|    |-- raw_data/
+|         |-- ISIC_2024_Training_GroundTruth.csv
+|         |-- ISIC_2024_Training_Supplement.csv
+|         |-- ISIC_2024_Training_Input.zip
 |-- models/
 |   |-- DEP.ipynb
 |-- notebooks/
