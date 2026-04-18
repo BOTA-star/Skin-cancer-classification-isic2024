@@ -2,6 +2,7 @@
 
 A deep learning project for skin cancer classification using the ISIC 2024 dataset.  
 The model leverages both image data and metadata (multimodal learning) to improve prediction performance.
+
 ---
 
 ## Dataset
@@ -27,9 +28,7 @@ https://drive.google.com/drive/folders/15o2zo7hnGKBjOfo2LfTbtulUUC5MZ-d8
 
 ## Setup
 
-Place the dataset into the following directory: 
-
-data/
+Place the dataset into the following directory: data/
 
 **Update paths if necessary depending on your local environment**
 
@@ -76,4 +75,5 @@ Set `flag = False`
 
 ## .py vs .ipynb
 *Jupyter notebooks (.ipynb)* are used for experimentation and step-by-step execution
+
 *Python scripts (.py)* are used for reusable modules and production-ready code
