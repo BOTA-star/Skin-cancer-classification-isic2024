@@ -1,46 +1,79 @@
-﻿# ISIC 2024 Skin Cancer Classification
+# ISIC 2024 Skin Cancer Classification
+
+A deep learning project for skin cancer classification using the ISIC 2024 dataset.  
+The model leverages both image data and metadata (multimodal learning) to improve prediction performance.
+---
+
+## Dataset
+
+**Download dataset from:** 
+https://drive.google.com/drive/folders/15o2zo7hnGKBjOfo2LfTbtulUUC5MZ-d8
+
+### Files
+
+- **train-metadata.csv**  
+
+  Contains metadata and labels for the training set, used to train the model.
+
+- **test-metadata.csv**  
+
+  Contains metadata for the test set (no labels), used for generating predictions.
+
+- **sample_submission.csv** 
+
+  A template file defining the required submission format (`isic_id`, `target`) where model predictions should be filled in.
+
+---
+
+## Setup
+
+Place the dataset into the following directory: 
+
+data/
+
+**Update paths if necessary depending on your local environment**
+
+---
 
 ## How to Run
-1. Download dataset from:
-https://challenge2024.isic-archive.com/
 
-2. Place the dataset into the correct directory:
-data/raw_data/
+Follow the pipeline below:
 
-3. Run notebooks step-by-step:
-- 00_extract_data.ipynb
-- 01_data_integrity.ipynb
-- 02_train_val_split.ipynb
-- ...
-- 08_test_training.ipynb
+1. **Data Preparation**
+   - Load metadata (`train-metadata.csv`, `test-metadata.csv`)
+   - Extract and organize image data
 
-4. For quick testing:
-- Set `flag = True` in `08_test_training.ipynb`
+2. **Data Validation**
+   - Check missing values, data consistency, and basic statistics
 
-5. For full training:
-- Set `flag = False`
+3. **Train/Validation Split**
+   - Split training data into train/validation sets
+
+4. **Feature Engineering**
+   - Process image data (transforms, normalization)
+   - Process metadata (encoding, scaling)
+
+5. **Model Training**
+   - Train multimodal model (image + metadata)
+
+6. **Evaluation**
+   - Evaluate performance on validation set
+
+7. **Inference**
+   - Generate predictions on test set
+
+8. **Submission**
+   - Format predictions following `sample_submission.csv`
+
+**Warning:** in `08_test_training.ipynb`
+* For quick testing:
+
+Set `flag = True`
+
+* For full training:
+
+Set `flag = False`
 
 ## .py vs .ipynb
-Jupyter notebooks (.ipynb) are used for experimentation and step-by-step execution
-Python scripts (.py) are used for reusable modules and production-ready code
-
-## Data Note
-Dataset paths may vary depending on your local storage structure.
-Please update the data directory paths in the notebooks or configuration files according to your environment.
-Example:
-* Change `image_dir` to match your local dataset location
-* Ensure `train.csv` and `val.csv` point to the correct paths
-
-## Debug Mode
-notebooks/08_test_training.ipynb:
-* Set flag = True for quick testing with limited batches.
-* Set flag = False for full training.
-
-## 14/4/2026 Summary
-Model - Forward Pass - Training Loop - Debug Mode
-* Implemented ResNet-based model for image classification
-* Verified model forward pass with DataLoader
-* Built training and validation pipeline
-* Applied weighted loss to handle class imbalance
-* Added debug mode for fast experimentation
-Next: Train on full dataset and add evaluation metrics (AUC)
+*Jupyter notebooks (.ipynb)* are used for experimentation and step-by-step execution
+*Python scripts (.py)* are used for reusable modules and production-ready code
