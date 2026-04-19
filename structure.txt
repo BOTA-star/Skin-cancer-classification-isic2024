@@ -1,14 +1,19 @@
 DATN/
 |-- config/
 |-- data/
-|    |-- raw_data/
-|         |-- ISIC_2024_Training_GroundTruth.csv
-|         |-- ISIC_2024_Training_Supplement.csv
-|         |-- ISIC_2024_Training_Input.zip
+|   |-- ISIC_2024_Training_Input
+|   |-- train-metadata.csv
+|   |-- test-metadata.csv
+|   |-- sample_submission.csv
+|   |-- train_split.csv
+|   |-- test_split.csv
+|   |-- val_split.csv
 |-- models/
 |   |-- DEP.ipynb
 |-- notebooks/
 |   |-- 00_extract_data.ipynb
+|   |-- 01_data_integrity.ipynb
+|   |-- 02_split_data.ipynb
 |   |-- DEP.ipynb
 |-- src/
 |   |-- __pycache__/
