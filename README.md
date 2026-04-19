@@ -2,6 +2,7 @@
 
 A deep learning project for skin cancer classification using the ISIC 2024 dataset.  
 The model leverages both image data and metadata (multimodal learning) to improve prediction performance.
+
 ---
 
 ## Dataset
