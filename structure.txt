@@ -1,13 +1,9 @@
 DATN/
 |-- config/
 |-- data/
-|   |-- ISIC_2024_Training_Input
-|   |-- train-metadata.csv
-|   |-- test-metadata.csv
-|   |-- sample_submission.csv
-|   |-- train_split.csv
-|   |-- test_split.csv
-|   |-- val_split.csv
+|   |-- raw
+|   |-- splits
+|   |-- processed
 |-- models/
 |   |-- DEP.ipynb
 |-- notebooks/
