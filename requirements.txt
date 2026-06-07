@@ -3,5 +3,8 @@ torchvision
 pandas
 numpy
 scikit-learn
-tqdm
 Pillow
+h5py
+tqdm
+joblib
+matplotlib
