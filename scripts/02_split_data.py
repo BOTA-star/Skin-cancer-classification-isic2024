@@ -5,13 +5,11 @@ from pathlib import Path
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT_DIR))
 
 import config.config as cfg
 from src.utils import ensure_dirs, check_file_exists, seed_everything
-
 
 REQUIRED_COLS = [
     "isic_id",
@@ -19,13 +17,11 @@ REQUIRED_COLS = [
     "patient_id",
 ]
 
-
 def check_required_columns(df: pd.DataFrame):
     missing_cols = [c for c in REQUIRED_COLS if c not in df.columns]
 
     if missing_cols:
         raise ValueError(f"Missing required columns: {missing_cols}")
-
 
 def make_patient_level_df(df: pd.DataFrame) -> pd.DataFrame:
     patient_df = (
@@ -36,7 +32,6 @@ def make_patient_level_df(df: pd.DataFrame) -> pd.DataFrame:
     )
 
     return patient_df
-
 
 def split_patients(patient_df: pd.DataFrame):
     holdout_size = getattr(cfg, "HOLDOUT_SIZE", 0.1)
@@ -61,7 +56,6 @@ def split_patients(patient_df: pd.DataFrame):
 
     return train_patients, val_patients, holdout_patients
 
-
 def build_row_split(
     df: pd.DataFrame,
     patient_split_df: pd.DataFrame,
@@ -69,7 +63,6 @@ def build_row_split(
     patient_ids = set(patient_split_df["patient_id"])
     split_df = df[df["patient_id"].isin(patient_ids)].copy()
     return split_df.reset_index(drop=True)
-
 
 def sample_negatives(
     df: pd.DataFrame,
@@ -98,7 +91,6 @@ def sample_negatives(
 
     return sampled_df
 
-
 def check_patient_overlap(train_df, val_df, holdout_df):
     train_patients = set(train_df["patient_id"])
     val_patients = set(val_df["patient_id"])
@@ -119,9 +111,8 @@ def check_patient_overlap(train_df, val_df, holdout_df):
 
     print("[OK] No patient overlap between train/val/holdout.")
 
-
 def print_split_summary(name: str, df: pd.DataFrame):
-    print(f"\n========== {name.upper()} ==========")
+    print(f"\n=== {name.upper()} ===")
     print(f"Rows: {len(df)}")
     print(f"Patients: {df['patient_id'].nunique()}")
 
@@ -134,14 +125,12 @@ def print_split_summary(name: str, df: pd.DataFrame):
     print("\nFirst 5 rows:")
     print(df[["isic_id", "target", "patient_id"]].head())
 
-
 def save_split(df: pd.DataFrame, path: str, name: str):
     df.to_csv(path, index=False)
     print(f"[OK] Saved {name}: {path}")
 
-
 def main():
-    print("========== ISIC 2024 SPLIT DATA ==========")
+    print("=== ISIC 2024 SPLIT DATA ===")
 
     seed_everything(cfg.SEED)
     ensure_dirs(cfg.SPLIT_DIR)
@@ -223,9 +212,8 @@ def main():
         "holdout split",
     )
 
-    print("\n========== RESULT ==========")
+    print("\n=== RESULT ===")
     print("[DONE] Split data completed.")
-
 
 if __name__ == "__main__":
     main()

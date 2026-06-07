@@ -7,7 +7,6 @@ import pandas as pd
 import torch
 import torch.nn as nn
 
-
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT_DIR))
 
@@ -19,7 +18,6 @@ from src.dataloader import (
 )
 
 from src.model import ISICMultimodalModel
-
 from src.train import evaluate
 
 from src.utils import (
@@ -30,9 +28,8 @@ from src.utils import (
     seed_everything,
 )
 
-
 def main():
-    print("========== ISIC 2024 EVALUATE HOLDOUT ==========")
+    print("=== ISIC 2024 EVALUATE HOLDOUT ===")
 
     seed_everything(cfg.SEED)
 
@@ -111,7 +108,7 @@ def main():
         max_batches=None,
     )
 
-    print("\n========== HOLDOUT METRICS ==========")
+    print("\n=== HOLDOUT METRICS ===")
     print(json.dumps(metrics, indent=2))
 
     output_path = os.path.join(
@@ -127,10 +124,9 @@ def main():
             indent=2,
         )
 
-    print("\n========== RESULT ==========")
+    print("\n=== RESULT ===")
     print(f"[OK] Holdout metrics saved: {output_path}")
     print("[DONE] Holdout evaluation completed.")
-
 
 if __name__ == "__main__":
     main()

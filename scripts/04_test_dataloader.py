@@ -3,7 +3,6 @@ from pathlib import Path
 
 import pandas as pd
 
-
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT_DIR))
 
@@ -21,9 +20,8 @@ from src.utils import (
     seed_everything,
 )
 
-
 def main():
-    print("========== ISIC 2024 TEST MULTIMODAL DATALOADER ==========")
+    print("=== ISIC 2024 TEST MULTIMODAL DATALOADER ===")
 
     seed_everything(cfg.SEED)
 
@@ -76,7 +74,7 @@ def main():
 
     print("\n[OK] Train/Val metadata columns match.")
 
-    print("\n========== CHECK ONE TRAIN BATCH ==========")
+    print("\n=== CHECK ONE TRAIN BATCH ===")
 
     images, metas, labels = next(iter(train_loader))
 
@@ -91,7 +89,7 @@ def main():
     print("Label sample:")
     print(labels[:20])
 
-    print("\n========== CHECK ONE VAL BATCH ==========")
+    print("\n=== CHECK ONE VAL BATCH ===")
 
     val_images, val_metas, val_labels = next(iter(val_loader))
 
@@ -99,14 +97,13 @@ def main():
     print("Val meta batch shape :", val_metas.shape)
     print("Val label batch shape:", val_labels.shape)
 
-    print("\n========== EXPECTED ==========")
+    print("\n=== EXPECTED ===")
     print(f"Image shape should be: [batch_size, 3, {cfg.IMAGE_SIZE}, {cfg.IMAGE_SIZE}]")
     print(f"Meta dim should be: {len(meta_cols)}")
     print("Label shape should be: [batch_size]")
 
-    print("\n========== RESULT ==========")
+    print("\n=== RESULT ===")
     print("[DONE] Multimodal dataloader test completed.")
-
 
 if __name__ == "__main__":
     main()

@@ -7,7 +7,6 @@ import pandas as pd
 import torch
 import torch.nn as nn
 
-
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT_DIR))
 
@@ -55,9 +54,8 @@ def save_checkpoint(
         path,
     )
 
-
 def main():
-    print("========== ISIC 2024 TRAIN DEMO ==========")
+    print("=== ISIC 2024 TRAIN DEMO ===")
 
     seed_everything(cfg.SEED)
 
@@ -143,7 +141,7 @@ def main():
     history = []
 
     for epoch in range(1, cfg.EPOCHS + 1):
-        print(f"\n========== EPOCH {epoch}/{cfg.EPOCHS} ==========")
+        print(f"\n=== EPOCH {epoch}/{cfg.EPOCHS} ===")
 
         if epoch == cfg.UNFREEZE_EPOCH:
             print("[INFO] Unfreezing image backbone...")
@@ -249,12 +247,11 @@ def main():
             indent=2,
         )
 
-    print("\n========== RESULT ==========")
+    print("\n=== RESULT ===")
     print(f"Best AUC: {best_auc:.4f}")
     print(f"History saved: {history_path}")
     print(f"Metrics saved: {metrics_path}")
     print("[DONE] Train demo completed.")
-
 
 if __name__ == "__main__":
     main()

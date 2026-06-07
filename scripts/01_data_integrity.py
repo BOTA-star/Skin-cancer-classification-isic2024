@@ -5,7 +5,6 @@ from pathlib import Path
 
 import pandas as pd
 
-
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT_DIR))
 
@@ -19,7 +18,6 @@ from config.config import (
 )
 from src.utils import ensure_dirs, check_file_exists
 
-
 REQUIRED_TRAIN_COLS = [
     "isic_id",
     "target",
@@ -32,7 +30,6 @@ OPTIONAL_META_COLS = [
     "anatom_site_general",
     "clin_size_long_diam_mm",
 ]
-
 
 def unzip_training_images_if_needed():
     if os.path.exists(TRAIN_IMAGE_DIR) and len(os.listdir(TRAIN_IMAGE_DIR)) > 0:
@@ -62,11 +59,10 @@ def unzip_training_images_if_needed():
 
     print("[OK] Unzip completed.")
 
-
 def check_metadata_file():
     check_file_exists(TRAIN_CSV, "train metadata CSV")
 
-    print("\n========== TRAIN METADATA ==========")
+    print("\n=== TRAIN METADATA ===")
     print(f"Path: {TRAIN_CSV}")
 
     df = pd.read_csv(TRAIN_CSV, low_memory=False)
@@ -119,9 +115,8 @@ def check_metadata_file():
 
     return df
 
-
 def check_training_images(df):
-    print("\n========== TRAINING IMAGES ==========")
+    print("\n=== TRAINING IMAGES ===")
 
     unzip_training_images_if_needed()
 
@@ -175,7 +170,7 @@ def check_training_images(df):
 
 
 def check_test_metadata():
-    print("\n========== TEST METADATA ==========")
+    print("\n=== TEST METADATA ===")
 
     if not os.path.exists(TEST_CSV):
         print(f"[WARNING] Test CSV not found: {TEST_CSV}")
@@ -199,9 +194,8 @@ def check_test_metadata():
     print("\nSample test isic_id:")
     print(test_df["isic_id"].head(10).tolist())
 
-
 def main():
-    print("========== ISIC 2024 DATA INTEGRITY CHECK ==========")
+    print("=== ISIC 2024 DATA INTEGRITY CHECK ===")
     print(f"DATA_DIR : {DATA_DIR}")
     print(f"WORK_DIR : {WORK_DIR}")
 
@@ -209,9 +203,8 @@ def main():
     check_training_images(df)
     check_test_metadata()
 
-    print("\n========== RESULT ==========")
+    print("\n=== RESULT ===")
     print("[DONE] Data integrity check completed.")
-
 
 if __name__ == "__main__":
     main()

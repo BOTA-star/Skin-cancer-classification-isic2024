@@ -1,9 +1,9 @@
 import os
 
 
-# =========================
+# ===========
 # PATH CONFIG
-# =========================
+# ===========
 
 DATA_ROOT = os.getenv("ISIC_DATA_ROOT", "data")
 
@@ -49,13 +49,13 @@ LAST_MODEL_PATH = os.path.join(CHECKPOINT_DIR, "last.pth")
 SUBMISSION_PATH = os.path.join(OUTPUT_DIR, "submission.csv")
 
 
-# =========================
+# ===========
 # TRAINING CONFIG
-# =========================
+# ===========
 
-# =========================
+# ===========
 # TRAINING CONFIG
-# =========================
+# ===========
 
 SEED = 42
 
@@ -89,9 +89,9 @@ BACKBONE = "mobilenet_v3_small"
 UNFREEZE_EPOCH = 999
 
 
-# =========================
+# ===========
 # METADATA CONFIG
-# =========================
+# ===========
 
 NUM_COLS = [
     "age_approx",

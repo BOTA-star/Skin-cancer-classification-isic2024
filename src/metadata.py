@@ -10,7 +10,6 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
-
 def make_onehot_encoder():
     try:
         return OneHotEncoder(
@@ -23,7 +22,6 @@ def make_onehot_encoder():
             sparse=False
         )
 
-
 def resolve_existing_columns(
     df: pd.DataFrame,
     num_cols: List[str],
@@ -33,7 +31,6 @@ def resolve_existing_columns(
     existing_cat_cols = [c for c in cat_cols if c in df.columns]
 
     return existing_num_cols, existing_cat_cols
-
 
 def build_metadata_preprocessor(
     num_cols: List[str],
@@ -63,7 +60,6 @@ def build_metadata_preprocessor(
 
     return preprocessor
 
-
 def fit_transform_metadata(
     df: pd.DataFrame,
     num_cols: List[str],
@@ -83,7 +79,6 @@ def fit_transform_metadata(
 
     return preprocessor, features
 
-
 def transform_metadata(
     preprocessor,
     df: pd.DataFrame,
@@ -96,7 +91,6 @@ def transform_metadata(
     features = features.astype(np.float32)
 
     return features
-
 
 def get_metadata_feature_names(
     preprocessor,
@@ -115,7 +109,6 @@ def get_metadata_feature_names(
         feature_names.extend(cat_feature_names.tolist())
 
     return feature_names
-
 
 def build_processed_dataframe(
     original_df: pd.DataFrame,
@@ -144,14 +137,11 @@ def build_processed_dataframe(
 
     return processed_df
 
-
 def save_preprocessor(preprocessor, path: str):
     joblib.dump(preprocessor, path)
 
-
 def load_preprocessor(path: str):
     return joblib.load(path)
-
 
 def save_metadata_info(
     path: str,
@@ -168,7 +158,6 @@ def save_metadata_info(
 
     with open(path, "w", encoding="utf-8") as f:
         json.dump(info, f, ensure_ascii=False, indent=2)
-
 
 def load_metadata_info(path: str):
     with open(path, "r", encoding="utf-8") as f:

@@ -4,7 +4,6 @@ from pathlib import Path
 
 import pandas as pd
 
-
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT_DIR))
 
@@ -26,7 +25,6 @@ from src.utils import (
     seed_everything,
 )
 
-
 METADATA_INFO_PATH = os.path.join(
     cfg.ARTIFACT_DIR,
     "metadata_features.json",
@@ -38,7 +36,7 @@ def load_split(path: str, name: str) -> pd.DataFrame:
 
     df = pd.read_csv(path, low_memory=False)
 
-    print(f"\n========== LOAD {name.upper()} ==========")
+    print(f"\n=== LOAD {name.upper()} ===")
     print(f"Path: {path}")
     print(f"Shape: {df.shape}")
 
@@ -58,7 +56,6 @@ def load_split(path: str, name: str) -> pd.DataFrame:
 
     return df
 
-
 def save_processed(df: pd.DataFrame, path: str, name: str):
     df.to_csv(path, index=False)
 
@@ -66,9 +63,8 @@ def save_processed(df: pd.DataFrame, path: str, name: str):
     print(path)
     print(f"Shape: {df.shape}")
 
-
 def main():
-    print("========== ISIC 2024 METADATA PREPROCESSING ==========")
+    print("=== ISIC 2024 METADATA PREPROCESSING ===")
 
     seed_everything(cfg.SEED)
     ensure_dirs(
@@ -97,7 +93,7 @@ def main():
         cfg.CAT_COLS,
     )
 
-    print("\n========== SELECTED METADATA COLUMNS ==========")
+    print("\n=== SELECTED METADATA COLUMNS ===")
     print(f"Numeric columns ({len(num_cols)}):")
     print(num_cols)
 
@@ -107,7 +103,7 @@ def main():
     if len(num_cols) == 0 and len(cat_cols) == 0:
         raise ValueError("No metadata columns found for preprocessing.")
 
-    print("\n========== FIT PREPROCESSOR ON TRAIN ONLY ==========")
+    print("\n=== FIT PREPROCESSOR ON TRAIN ONLY ===")
 
     preprocessor, train_features = fit_transform_metadata(
         train_df,
@@ -189,7 +185,7 @@ def main():
     print("\n[OK] Saved metadata feature info:")
     print(METADATA_INFO_PATH)
 
-    print("\n========== FINAL CHECK ==========")
+    print("\n=== FINAL CHECK ===")
     print("Train processed shape:", train_processed.shape)
     print("Val processed shape:", val_processed.shape)
     print("Holdout processed shape:", holdout_processed.shape)
@@ -197,9 +193,8 @@ def main():
     print("\nTrain processed columns sample:")
     print(train_processed.columns[:20].tolist())
 
-    print("\n========== RESULT ==========")
+    print("\n=== RESULT ===")
     print("[DONE] Metadata preprocessing completed.")
-
 
 if __name__ == "__main__":
     main()

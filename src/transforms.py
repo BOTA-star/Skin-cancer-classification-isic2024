@@ -1,6 +1,5 @@
 from torchvision import transforms
 
-
 def get_train_transforms(image_size: int = 300):
     return transforms.Compose([
         transforms.Resize((image_size, image_size)),
@@ -21,7 +20,6 @@ def get_train_transforms(image_size: int = 300):
             std=[0.229, 0.224, 0.225],
         ),
     ])
-
 
 def get_val_transforms(image_size: int = 300):
     return transforms.Compose([

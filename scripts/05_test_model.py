@@ -4,7 +4,6 @@ from pathlib import Path
 import pandas as pd
 import torch
 
-
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT_DIR))
 
@@ -24,16 +23,14 @@ from src.utils import (
     seed_everything,
 )
 
-
 def count_parameters(model):
     total = sum(p.numel() for p in model.parameters())
     trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
 
     return total, trainable
 
-
 def main():
-    print("========== ISIC 2024 TEST MULTIMODAL MODEL ==========")
+    print("=== ISIC 2024 TEST MULTIMODAL MODEL ===")
 
     seed_everything(cfg.SEED)
 
@@ -79,11 +76,11 @@ def main():
 
     total_params, trainable_params = count_parameters(model)
 
-    print("\n========== MODEL PARAMS ==========")
+    print("\n=== MODEL PARAMS ===")
     print(f"Total params    : {total_params:,}")
     print(f"Trainable params: {trainable_params:,}")
 
-    print("\n========== FREEZE IMAGE BACKBONE TEST ==========")
+    print("\n=== FREEZE IMAGE BACKBONE TEST ===")
 
     model.freeze_image_backbone()
 
@@ -92,7 +89,7 @@ def main():
     print(f"Total params    : {total_params:,}")
     print(f"Trainable params: {trainable_params:,}")
 
-    print("\n========== FORWARD PASS TEST ==========")
+    print("\n=== FORWARD PASS TEST ===")
 
     images, metas, labels = next(iter(train_loader))
 
@@ -121,13 +118,12 @@ def main():
             f"Output shape {logits.shape} does not match label shape {labels.shape}"
         )
 
-    print("\n========== EXPECTED ==========")
+    print("\n=== EXPECTED ===")
     print("Logits shape should be: [batch_size, 1]")
     print("Labels shape should be: [batch_size, 1]")
 
-    print("\n========== RESULT ==========")
+    print("\n=== RESULT ===")
     print("[DONE] Multimodal model test completed.")
-
 
 if __name__ == "__main__":
     main()

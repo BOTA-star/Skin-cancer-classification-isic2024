@@ -12,7 +12,6 @@ from sklearn.metrics import (
 
 from tqdm import tqdm
 
-
 def train_one_epoch(
     model,
     loader,
@@ -54,7 +53,6 @@ def train_one_epoch(
     avg_loss = total_loss / max(total_batches, 1)
 
     return avg_loss
-
 
 def evaluate(
     model,

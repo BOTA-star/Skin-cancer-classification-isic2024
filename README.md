@@ -1,44 +1,50 @@
 # ISIC 2024 Skin Cancer Classification
 
-This project implements a multimodal deep learning pipeline for skin cancer classification using the ISIC 2024 dataset.
+This project is a multimodal deep learning pipeline for skin cancer classification using the ISIC 2024 dataset.
 
-The model combines:
+The model uses both:
 
 * Skin lesion images
 * Patient and lesion metadata
 
-to predict the probability of a lesion being malignant.
+to predict the probability that a skin lesion is malignant.
 
-> Note: This project is for academic and research purposes only. It is not intended for real-world medical diagnosis.
+This repository is currently configured for a lightweight local CPU demo. Full training can be performed later on Kaggle or Google Colab with GPU.
+
+> This project is developed for academic and research purposes only. It is not intended for real-world medical diagnosis.
 
 ---
 
 ## 1. Project Overview
 
-Skin cancer classification is a challenging computer vision problem because the dataset is highly imbalanced and visual differences between benign and malignant lesions can be subtle.
+Skin cancer classification is challenging because malignant samples are rare and visual differences between benign and malignant lesions can be subtle.
 
-To improve the prediction pipeline, this project uses a multimodal learning approach:
+Instead of using only images, this project applies a multimodal learning approach:
 
 ```text
-Image input      → CNN backbone
-Metadata input   → MLP branch
+Image input    → CNN backbone
+Metadata input → MLP branch
 Image features + Metadata features → Fusion classifier → Prediction
 ```
 
-Current local demo model:
+Current demo architecture:
 
 ```text
 MobileNetV3-Small + Metadata MLP
 ```
 
-The local version is designed to run on CPU with a small subset of the dataset.
-Full training can be performed later on Kaggle or Colab with GPU.
+The current local version is designed to:
+
+* run on a personal computer without GPU
+* validate the full machine learning pipeline
+* demonstrate the project structure clearly on GitHub
+* prepare the codebase for future full training on GPU
 
 ---
 
 ## 2. Dataset
 
-Dataset used: ISIC 2024 Skin Cancer Detection Challenge
+Dataset used: **ISIC 2024 Skin Cancer Detection Challenge**
 
 Download dataset from:
 
@@ -46,7 +52,7 @@ Download dataset from:
 https://drive.google.com/drive/folders/15o2zo7hnGKBjOfo2LfTbtulUUC5MZ-d8
 ```
 
-Expected dataset files:
+Expected files:
 
 ```text
 train-metadata.csv
@@ -62,7 +68,7 @@ After downloading, place the dataset under:
 data/raw/
 ```
 
-Expected structure:
+Expected local structure:
 
 ```text
 DATN/
@@ -79,11 +85,7 @@ DATN/
 │           └── ...
 ```
 
-The image folder can be extracted automatically or manually from:
-
-```text
-ISIC_2024_Training_Input.zip
-```
+Large data files are not included in this repository.
 
 ---
 
@@ -116,12 +118,13 @@ DATN/
 ├── notebooks/
 │   └── legacy notebooks / experiments
 │
+├── main.py
 ├── requirements.txt
 ├── README.md
 └── .gitignore
 ```
 
-Generated files are not committed to GitHub:
+Generated files are ignored by Git:
 
 ```text
 data/
@@ -135,11 +138,13 @@ models/
 
 ## 4. Environment Setup
 
-Create and activate a virtual environment:
+Create a virtual environment:
 
 ```bash
 python -m venv venv
 ```
+
+Activate the environment.
 
 On Windows:
 
@@ -178,7 +183,7 @@ Main configuration file:
 config/config.py
 ```
 
-For local CPU demo mode, the project uses a lightweight setup:
+The current configuration is optimized for local CPU demo mode:
 
 ```python
 IMAGE_SIZE = 160
@@ -196,43 +201,115 @@ USE_PRETRAINED = False
 NUM_WORKERS = 0
 ```
 
-This mode is suitable for:
-
-* testing the full pipeline
-* running on a personal computer without GPU
-* demonstrating the project on GitHub
+This setup is intentionally lightweight. It is used to verify that the whole pipeline works correctly on a personal computer.
 
 For full training on Kaggle or Colab GPU, these values can be increased later.
 
 ---
 
-## 6. How to Run
+## 6. Run the Full Pipeline
 
-Run the pipeline step by step.
+The easiest way to run the project is:
 
-### Step 1: Check dataset integrity
+```bash
+python main.py
+```
+
+This runs the full pipeline:
+
+```text
+01_data_integrity.py
+02_split_data.py
+03_preprocess_metadata.py
+04_test_dataloader.py
+05_test_model.py
+06_train_demo.py
+07_evaluate_holdout.py
+08_infer_submission.py
+```
+
+The `main.py` file acts as a pipeline runner. It executes each script step by step and stops if any step fails.
+
+---
+
+## 7. Run Individual Stages
+
+Run only dataset checking:
+
+```bash
+python main.py --stage check
+```
+
+Run data splitting and metadata preprocessing:
+
+```bash
+python main.py --stage prepare
+```
+
+Run dataloader and model verification:
+
+```bash
+python main.py --stage verify
+```
+
+Run demo training:
+
+```bash
+python main.py --stage train
+```
+
+Run holdout evaluation:
+
+```bash
+python main.py --stage evaluate
+```
+
+Run inference and generate submission:
+
+```bash
+python main.py --stage infer
+```
+
+Run local demo without inference:
+
+```bash
+python main.py --stage demo
+```
+
+Preview the scripts without executing them:
+
+```bash
+python main.py --stage all --dry-run
+```
+
+---
+
+## 8. Pipeline Details
+
+### Step 1: Data Integrity Check
 
 ```bash
 python scripts/01_data_integrity.py
 ```
 
-This checks:
+Checks:
 
-* metadata files
+* train metadata
+* test metadata
 * required columns
 * image folder
 * image path consistency
-* train/test metadata structure
+* target distribution
 
 ---
 
-### Step 2: Split data
+### Step 2: Data Split
 
 ```bash
 python scripts/02_split_data.py
 ```
 
-This creates:
+Creates:
 
 ```text
 data/splits/train_split.csv
@@ -240,17 +317,17 @@ data/splits/val_split.csv
 data/splits/holdout_split.csv
 ```
 
-The split is performed by `patient_id` to avoid patient-level data leakage.
+The split is performed by `patient_id` to reduce patient-level data leakage.
 
 ---
 
-### Step 3: Preprocess metadata
+### Step 3: Metadata Preprocessing
 
 ```bash
 python scripts/03_preprocess_metadata.py
 ```
 
-This creates:
+Creates:
 
 ```text
 data/processed/train_processed.csv
@@ -263,7 +340,7 @@ artifacts/metadata_features.json
 Metadata preprocessing includes:
 
 * numeric imputation
-* numeric scaling
+* standard scaling
 * categorical imputation
 * one-hot encoding
 
@@ -271,35 +348,35 @@ The preprocessor is fitted only on the training set.
 
 ---
 
-### Step 4: Test dataloader
+### Step 4: Dataloader Test
 
 ```bash
 python scripts/04_test_dataloader.py
 ```
 
-Expected output:
+Expected tensor shapes:
 
 ```text
-Image batch shape: [batch_size, 3, image_size, image_size]
-Meta batch shape : [batch_size, metadata_dim]
-Label batch shape: [batch_size]
+Image batch: [batch_size, 3, image_size, image_size]
+Meta batch : [batch_size, metadata_dim]
+Label batch: [batch_size]
 ```
 
 ---
 
-### Step 5: Test model forward pass
+### Step 5: Model Test
 
 ```bash
 python scripts/05_test_model.py
 ```
 
-This verifies that the multimodal model can receive:
+Checks whether the multimodal model can process:
 
 ```text
 image tensor + metadata tensor
 ```
 
-and produce:
+and output:
 
 ```text
 logits with shape [batch_size, 1]
@@ -307,15 +384,13 @@ logits with shape [batch_size, 1]
 
 ---
 
-### Step 6: Train demo model
+### Step 6: Demo Training
 
 ```bash
 python scripts/06_train_demo.py
 ```
 
-This trains a lightweight demo model using a small subset of the dataset.
-
-Generated files:
+Creates:
 
 ```text
 checkpoints/best.pth
@@ -324,42 +399,29 @@ outputs/train_demo_history.csv
 outputs/train_demo_metrics.json
 ```
 
-Example local demo result:
-
-```text
-Best validation AUC: 0.6520
-```
-
 ---
 
-### Step 7: Evaluate on holdout set
+### Step 7: Holdout Evaluation
 
 ```bash
 python scripts/07_evaluate_holdout.py
 ```
 
-Generated file:
+Creates:
 
 ```text
 outputs/holdout_metrics.json
 ```
 
-Example local demo result:
-
-```text
-Holdout AUC: 0.6983
-PR-AUC: 0.3722
-```
-
 ---
 
-### Step 8: Generate submission file
+### Step 8: Inference and Submission
 
 ```bash
 python scripts/08_infer_submission.py
 ```
 
-Generated file:
+Creates:
 
 ```text
 outputs/submission.csv
@@ -376,47 +438,58 @@ ISIC_0015740,0.518118
 
 ---
 
-## 7. Model Architecture
+## 9. Model Architecture
 
-The current demo model uses:
+The demo model uses two input branches.
+
+### Image Branch
 
 ```text
-Image branch:
-MobileNetV3-Small
-
-Metadata branch:
-Fully connected neural network
-
-Fusion:
-Concatenate image features and metadata features
-
-Classifier:
-Dense layers → binary prediction
+Input image
+→ MobileNetV3-Small
+→ Image feature vector
 ```
 
-Architecture summary:
+### Metadata Branch
+
+```text
+Input metadata
+→ Fully connected layers
+→ Metadata feature vector
+```
+
+### Fusion Classifier
+
+```text
+Image feature vector + Metadata feature vector
+→ Concatenate
+→ Dense layers
+→ Malignancy probability
+```
+
+Overall flow:
 
 ```text
 Image
   ↓
 CNN Backbone
   ↓
-Image Feature Vector
+Image Features
         \
-         → Concatenate → Classifier → Malignancy Probability
+         → Concatenate → Classifier → Prediction
         /
 Metadata
   ↓
 MLP
   ↓
-Metadata Feature Vector
+Metadata Features
 ```
 
 ---
 
-## 8. Metadata Features
+## 10. Metadata Features
 
-The project uses metadata columns that are available in both train and test data, including:
+The model uses metadata columns that are available in both train and test data, such as:
 
 ```text
 age_approx
@@ -432,13 +505,14 @@ tbp_lv_areaMM2
 tbp_lv_perimeterMM
 tbp_lv_location
 tbp_lv_location_simple
-...
 ```
 
-Columns related to diagnosis or unavailable test labels are not used as input features, such as:
+Columns that may leak diagnosis information or are not available at prediction time are not used as input features, for example:
 
 ```text
 target
+patient_id
+lesion_id
 iddx_full
 iddx_1
 iddx_2
@@ -447,77 +521,39 @@ iddx_4
 iddx_5
 mel_mitotic_index
 mel_thick_mm
-lesion_id
-patient_id
 ```
 
-`patient_id` is used only for splitting data, not as a model input.
+`patient_id` is used only for data splitting, not as a model input.
 
 ---
 
-## 9. Local Demo vs Full Training
+## 11. Demo Results
 
-### Local demo mode
-
-Used for:
+The current CPU demo uses:
 
 ```text
-CPU testing
-GitHub demonstration
-fast end-to-end pipeline validation
+Backbone: MobileNetV3-Small
+Image size: 160
+Batch size: 4
+Epochs: 2
+Max train batches: 20
+Max validation batches: 10
+Use pretrained weights: False
 ```
 
-Characteristics:
-
-```text
-Small data subset
-Small image size
-MobileNetV3-Small
-No pretrained weights
-Limited training batches
-```
-
-### Full training mode
-
-For future GPU training on Kaggle or Colab:
-
-```text
-Use larger dataset sample or full dataset
-Use pretrained CNN backbone
-Increase image size
-Increase batch size if GPU memory allows
-Train for more epochs
-Consider EfficientNet-B0 / EfficientNet-B3
-Tune imbalance handling
-```
-
-Example full-training direction:
-
-```python
-IMAGE_SIZE = 300
-BATCH_SIZE = 16
-EPOCHS = 15
-NEGATIVE_SAMPLE_SIZE = 50000
-EVAL_NEGATIVE_SAMPLE_SIZE = 10000
-BACKBONE = "efficientnet_b3"
-USE_PRETRAINED = True
-```
-
----
-
-## 10. Results
-
-Current local CPU demo result:
+Example demo results:
 
 ```text
 Validation AUC: 0.6520
+Validation PR-AUC: 0.5970
+
 Holdout AUC: 0.6983
 Holdout PR-AUC: 0.3722
 ```
 
-These results are from a lightweight CPU demo configuration and are not final model performance.
+These results are from a lightweight CPU demo and should not be considered final model performance.
 
-The purpose of this version is to verify that the full pipeline works correctly:
+The goal of this version is to prove that the full pipeline works end-to-end:
 
 ```text
 data validation
@@ -533,19 +569,80 @@ data validation
 
 ---
 
-## 11. Notes
+## 12. Local Demo vs Full Training
 
-* The dataset is highly imbalanced.
-* Accuracy alone is not a reliable metric.
-* AUC and PR-AUC are more informative for this task.
-* The local demo model may predict poorly at threshold `0.5`, but AUC can still show whether the model is learning ranking ability.
-* Full performance should be evaluated after GPU training.
+### Local CPU Demo
+
+Used for:
+
+```text
+testing
+debugging
+GitHub demonstration
+academic report validation
+```
+
+Characteristics:
+
+```text
+small subset of data
+small image size
+MobileNetV3-Small
+no pretrained weights
+limited training batches
+```
+
+### Full GPU Training
+
+For future training on Kaggle or Colab:
+
+```python
+IMAGE_SIZE = 300
+BATCH_SIZE = 16
+EPOCHS = 15
+
+NEGATIVE_SAMPLE_SIZE = 50000
+EVAL_NEGATIVE_SAMPLE_SIZE = 10000
+
+BACKBONE = "efficientnet_b3"
+USE_PRETRAINED = True
+```
+
+Possible improvements for the full version:
+
+* use pretrained EfficientNet-B0 or EfficientNet-B3
+* increase image size
+* train for more epochs
+* use stronger augmentation
+* tune class imbalance handling
+* apply focal loss
+* tune prediction threshold
+* add Grad-CAM explainability
+* compare image-only, metadata-only, and multimodal models
 
 ---
 
-## 12. GitHub Notes
+## 13. Important Notes
 
-Do not commit large data or model files.
+The ISIC 2024 dataset is highly imbalanced. In the raw training metadata, malignant samples are much fewer than benign samples.
+
+Because of this, accuracy alone is not a reliable metric. This project reports:
+
+```text
+AUC
+PR-AUC
+Precision
+Recall
+F1-score
+```
+
+The local demo model may predict poorly at a fixed threshold of `0.5`, but AUC can still show whether the model is learning useful ranking behavior.
+
+---
+
+## 14. GitHub Notes
+
+Do not commit large data, model checkpoints, or generated outputs.
 
 Recommended `.gitignore`:
 
@@ -577,6 +674,7 @@ config/
 src/
 scripts/
 notebooks/
+main.py
 requirements.txt
 README.md
 .gitignore
@@ -594,22 +692,24 @@ venv/
 
 ---
 
-## 13. Future Improvements
+## 15. Future Work
 
-Potential improvements:
+Future improvements include:
 
-* Train full model on Kaggle or Colab GPU
-* Use pretrained EfficientNet-B0 or EfficientNet-B3
-* Add focal loss for class imbalance
-* Add test-time augmentation
-* Tune decision threshold
-* Add Grad-CAM visualization for explainability
-* Compare image-only, metadata-only, and multimodal models
-* Add experiment tracking for multiple configurations
+* full training on Kaggle or Google Colab GPU
+* using pretrained CNN backbones
+* comparing multiple backbones
+* adding image-only and metadata-only baselines
+* improving class imbalance strategy
+* adding threshold optimization
+* adding Grad-CAM visualization
+* adding experiment tracking
+* improving model interpretation for academic reporting
 
 ---
 
-## 14. Disclaimer
+## 16. Disclaimer
 
-This project is developed for academic research and educational purposes only.
-The model output should not be used as a medical diagnosis or clinical decision-making tool.
+This project is for academic and educational purposes only.
+
+The model predictions should not be used for medical diagnosis or clinical decision-making.

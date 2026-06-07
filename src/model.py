@@ -7,7 +7,6 @@ from torchvision.models import (
     mobilenet_v3_small,
 )
 
-
 def build_image_backbone(
     backbone_name: str = "mobilenet_v3_small",
     pretrained: bool = False,
@@ -78,7 +77,6 @@ def build_image_backbone(
         return model, image_feature_dim
 
     raise ValueError(f"Unsupported backbone: {backbone_name}")
-
 
 class ISICMultimodalModel(nn.Module):
     def __init__(

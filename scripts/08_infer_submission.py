@@ -9,7 +9,6 @@ import torch
 from PIL import Image
 from torch.utils.data import Dataset, DataLoader
 
-
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT_DIR))
 
@@ -31,7 +30,6 @@ from src.utils import (
     get_device,
     seed_everything,
 )
-
 
 class ISICTestHDF5Dataset(Dataset):
     def __init__(
@@ -73,9 +71,8 @@ class ISICTestHDF5Dataset(Dataset):
         except Exception:
             pass
 
-
 def main():
-    print("========== ISIC 2024 INFER SUBMISSION ==========")
+    print("=== ISIC 2024 INFER SUBMISSION ===")
 
     seed_everything(cfg.SEED)
 
@@ -210,10 +207,9 @@ def main():
     print("\nSubmission preview:")
     print(submission.head())
 
-    print("\n========== RESULT ==========")
+    print("\n=== RESULT ===")
     print(f"[OK] Submission saved: {cfg.SUBMISSION_PATH}")
     print("[DONE] Inference completed.")
-
 
 if __name__ == "__main__":
     main()

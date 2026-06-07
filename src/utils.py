@@ -4,7 +4,6 @@ import random
 import numpy as np
 import torch
 
-
 def seed_everything(seed: int = 42):
     random.seed(seed)
     np.random.seed(seed)
@@ -15,15 +14,12 @@ def seed_everything(seed: int = 42):
     torch.backends.cudnn.benchmark = True
     torch.backends.cudnn.deterministic = False
 
-
 def ensure_dirs(*dirs):
     for d in dirs:
         os.makedirs(d, exist_ok=True)
 
-
 def get_device():
     return "cuda" if torch.cuda.is_available() else "cpu"
-
 
 def check_file_exists(path: str, name: str = "file"):
     if not os.path.exists(path):

@@ -4,13 +4,11 @@ from torch.utils.data import DataLoader, WeightedRandomSampler
 from src.dataset import ISICMultimodalDataset
 from src.transforms import get_train_transforms, get_val_transforms
 
-
 BASE_COLS = [
     "isic_id",
     "patient_id",
     "target",
 ]
-
 
 def get_meta_columns(df):
     meta_cols = [c for c in df.columns if c not in BASE_COLS]
@@ -19,7 +17,6 @@ def get_meta_columns(df):
         raise ValueError("No metadata feature columns found.")
 
     return meta_cols
-
 
 def create_weighted_sampler(df):
     if "target" not in df.columns:
@@ -44,7 +41,6 @@ def create_weighted_sampler(df):
     )
 
     return sampler
-
 
 def create_train_loader(
     train_df,
@@ -81,7 +77,6 @@ def create_train_loader(
     )
 
     return train_loader, meta_cols
-
 
 def create_eval_loader(
     eval_df,
