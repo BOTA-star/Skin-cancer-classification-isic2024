@@ -7,20 +7,20 @@ import pandas as pd
 import torch
 import torch.nn as nn
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parent
 sys.path.append(str(ROOT_DIR))
 
-import config.config as cfg
+import config as cfg
 
-from src.dataloader import (
+from dataloader import (
     create_eval_loader,
     get_meta_columns,
 )
 
-from src.model import ISICMultimodalModel
-from src.train import evaluate
+from model import ISICMultimodalModel
+from train import evaluate
 
-from src.utils import (
+from utils import (
     ensure_dirs,
     check_file_exists,
     check_dir_exists,

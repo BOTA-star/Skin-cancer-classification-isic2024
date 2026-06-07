@@ -3,18 +3,18 @@ from pathlib import Path
 
 import pandas as pd
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parent
 sys.path.append(str(ROOT_DIR))
 
-import config.config as cfg
+import config as cfg
 
-from src.dataloader import (
+from dataloader import (
     create_train_loader,
     create_eval_loader,
     get_meta_columns,
 )
 
-from src.utils import (
+from utils import (
     check_file_exists,
     check_dir_exists,
     seed_everything,

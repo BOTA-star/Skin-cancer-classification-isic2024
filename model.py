@@ -10,6 +10,7 @@ from torchvision.models import (
 def build_image_backbone(
     backbone_name: str = "mobilenet_v3_small",
     pretrained: bool = False,
+    backbone_weights_path: str = None,
 ):
     """
     Build image backbone.
@@ -18,9 +19,10 @@ def build_image_backbone(
     """
 
     backbone_name = backbone_name.lower()
+    model = None
 
     if backbone_name == "mobilenet_v3_small":
-        if pretrained:
+        if pretrained and not backbone_weights_path:
             try:
                 from torchvision.models import MobileNet_V3_Small_Weights
                 model = mobilenet_v3_small(
@@ -36,10 +38,8 @@ def build_image_backbone(
         image_feature_dim = model.classifier[0].in_features
         model.classifier = nn.Identity()
 
-        return model, image_feature_dim
-
-    if backbone_name == "efficientnet_b0":
-        if pretrained:
+    elif backbone_name == "efficientnet_b0":
+        if pretrained and not backbone_weights_path:
             try:
                 from torchvision.models import EfficientNet_B0_Weights
                 model = efficientnet_b0(
@@ -55,10 +55,8 @@ def build_image_backbone(
         image_feature_dim = model.classifier[1].in_features
         model.classifier = nn.Identity()
 
-        return model, image_feature_dim
-
-    if backbone_name == "efficientnet_b3":
-        if pretrained:
+    elif backbone_name == "efficientnet_b3":
+        if pretrained and not backbone_weights_path:
             try:
                 from torchvision.models import EfficientNet_B3_Weights
                 model = efficientnet_b3(
@@ -74,9 +72,44 @@ def build_image_backbone(
         image_feature_dim = model.classifier[1].in_features
         model.classifier = nn.Identity()
 
-        return model, image_feature_dim
+    else:
+        raise ValueError(f"Unsupported backbone: {backbone_name}")
 
-    raise ValueError(f"Unsupported backbone: {backbone_name}")
+    if backbone_weights_path:
+        import os
+        if os.path.exists(backbone_weights_path):
+            print(f"[INFO] Loading offline backbone weights from: {backbone_weights_path}")
+            try:
+                state_dict = torch.load(backbone_weights_path, map_location="cpu")
+                # Xử lý trường hợp load toàn bộ object checkpoint
+                if isinstance(state_dict, dict):
+                    if "state_dict" in state_dict:
+                        state_dict = state_dict["state_dict"]
+                    elif "model_state_dict" in state_dict:
+                        state_dict = state_dict["model_state_dict"]
+                    elif "model" in state_dict:
+                        state_dict = state_dict["model"]
+                
+                # Loại bỏ prefix nếu có
+                normalized = {}
+                for k, v in state_dict.items():
+                    key = k
+                    if key.startswith("module."):
+                        key = key[7:]
+                    if key.startswith("features."):
+                        # PyTorch torchvision models usually have features. prefix natively, 
+                        # so we shouldn't strip it unless it mismatches.
+                        pass
+                    normalized[key] = v
+                
+                missing, unexpected = model.load_state_dict(normalized, strict=False)
+                print(f"[OK] Backbone loaded. Missing: {len(missing)} | Unexpected: {len(unexpected)}")
+            except Exception as e:
+                print(f"[ERROR] Failed to load offline backbone weights: {e}")
+        else:
+            print(f"[WARNING] Offline backbone weights not found: {backbone_weights_path}")
+
+    return model, image_feature_dim
 
 class ISICMultimodalModel(nn.Module):
     def __init__(
@@ -84,6 +117,7 @@ class ISICMultimodalModel(nn.Module):
         meta_dim: int,
         backbone_name: str = "mobilenet_v3_small",
         pretrained: bool = False,
+        backbone_weights_path: str = None,
         metadata_hidden_dim: int = 64,
         fusion_hidden_dim: int = 128,
         dropout: float = 0.3,
@@ -93,6 +127,7 @@ class ISICMultimodalModel(nn.Module):
         self.image_model, image_feature_dim = build_image_backbone(
             backbone_name=backbone_name,
             pretrained=pretrained,
+            backbone_weights_path=backbone_weights_path,
         )
 
         self.meta_model = nn.Sequential(

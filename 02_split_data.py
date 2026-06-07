@@ -5,11 +5,11 @@ from pathlib import Path
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parent
 sys.path.append(str(ROOT_DIR))
 
-import config.config as cfg
-from src.utils import ensure_dirs, check_file_exists, seed_everything
+import config as cfg
+from utils import ensure_dirs, check_file_exists, seed_everything
 
 REQUIRED_COLS = [
     "isic_id",

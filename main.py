@@ -10,24 +10,24 @@ ROOT_DIR = Path(__file__).resolve().parent
 
 PIPELINE_STEPS = {
     "check": [
-        "scripts/01_data_integrity.py",
+        "01_data_integrity.py",
     ],
     "prepare": [
-        "scripts/02_split_data.py",
-        "scripts/03_preprocess_metadata.py",
+        "02_split_data.py",
+        "03_preprocess_metadata.py",
     ],
     "verify": [
-        "scripts/04_test_dataloader.py",
-        "scripts/05_test_model.py",
+        "04_test_dataloader.py",
+        "05_test_model.py",
     ],
     "train": [
-        "scripts/06_train_demo.py",
+        "06_train_demo.py",
     ],
     "evaluate": [
-        "scripts/07_evaluate_holdout.py",
+        "07_evaluate_holdout.py",
     ],
     "infer": [
-        "scripts/08_infer_submission.py",
+        "08_infer_submission.py",
     ],
 }
 

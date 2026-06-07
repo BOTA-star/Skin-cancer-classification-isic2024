@@ -5,10 +5,10 @@ from pathlib import Path
 
 import pandas as pd
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parent
 sys.path.append(str(ROOT_DIR))
 
-from config.config import (
+from config import (
     TRAIN_CSV,
     TEST_CSV,
     TRAIN_IMAGE_ZIP,
@@ -16,7 +16,7 @@ from config.config import (
     DATA_DIR,
     WORK_DIR,
 )
-from src.utils import ensure_dirs, check_file_exists
+from utils import ensure_dirs, check_file_exists
 
 REQUIRED_TRAIN_COLS = [
     "isic_id",

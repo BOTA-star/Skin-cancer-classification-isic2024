@@ -4,12 +4,12 @@ from pathlib import Path
 
 import pandas as pd
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parent
 sys.path.append(str(ROOT_DIR))
 
-import config.config as cfg
+import config as cfg
 
-from src.metadata import (
+from metadata import (
     resolve_existing_columns,
     fit_transform_metadata,
     transform_metadata,
@@ -19,7 +19,7 @@ from src.metadata import (
     save_metadata_info,
 )
 
-from src.utils import (
+from utils import (
     ensure_dirs,
     check_file_exists,
     seed_everything,

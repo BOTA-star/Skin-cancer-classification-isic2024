@@ -4,19 +4,19 @@ from pathlib import Path
 import pandas as pd
 import torch
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parent
 sys.path.append(str(ROOT_DIR))
 
-import config.config as cfg
+import config as cfg
 
-from src.dataloader import (
+from dataloader import (
     create_train_loader,
     get_meta_columns,
 )
 
-from src.model import ISICMultimodalModel
+from model import ISICMultimodalModel
 
-from src.utils import (
+from utils import (
     check_file_exists,
     check_dir_exists,
     get_device,
@@ -72,6 +72,7 @@ def main():
         meta_dim=meta_dim,
         backbone_name=cfg.BACKBONE,
         pretrained=cfg.USE_PRETRAINED,
+        backbone_weights_path=getattr(cfg, "BACKBONE_WEIGHTS_PATH", None),
     ).to(device)
 
     total_params, trainable_params = count_parameters(model)

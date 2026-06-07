@@ -9,22 +9,22 @@ import torch
 from PIL import Image
 from torch.utils.data import Dataset, DataLoader
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parent
 sys.path.append(str(ROOT_DIR))
 
-import config.config as cfg
+import config as cfg
 
-from src.metadata import (
+from metadata import (
     load_preprocessor,
     transform_metadata,
     get_metadata_feature_names,
 )
 
-from src.model import ISICMultimodalModel
+from model import ISICMultimodalModel
 
-from src.transforms import get_val_transforms
+from transforms import get_val_transforms
 
-from src.utils import (
+from utils import (
     ensure_dirs,
     check_file_exists,
     get_device,

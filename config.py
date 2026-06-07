@@ -81,6 +81,7 @@ MAX_VAL_BATCHES = 10
 
 # Local CPU không tải pretrained để tránh nặng
 USE_PRETRAINED = False
+BACKBONE_WEIGHTS_PATH = None
 
 # Backbone nhẹ cho demo local
 BACKBONE = "mobilenet_v3_small"

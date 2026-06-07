@@ -1,8 +1,8 @@
 import torch
 from torch.utils.data import DataLoader, WeightedRandomSampler
 
-from src.dataset import ISICMultimodalDataset
-from src.transforms import get_train_transforms, get_val_transforms
+from dataset import ISICMultimodalDataset
+from transforms import get_train_transforms, get_val_transforms
 
 BASE_COLS = [
     "isic_id",
